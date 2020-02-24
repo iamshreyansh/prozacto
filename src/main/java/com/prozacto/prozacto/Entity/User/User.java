@@ -30,4 +30,7 @@ public class User extends BaseEntityIntID {
 
     @Column(name = "age")
     private Integer age;
+
+    @Column(name = "userType")
+    private Integer userType;
 }
