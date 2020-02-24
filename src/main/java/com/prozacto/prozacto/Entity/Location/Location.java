@@ -1,5 +1,6 @@
 package com.prozacto.prozacto.Entity.Location;
 
+import com.prozacto.prozacto.Entity.BaseEntityIntID;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,7 +17,7 @@ import javax.persistence.Entity;
 
 @Entity(name = "location")
 @Where(clause = "deleted = 0")
-public class Location {
+public class Location extends BaseEntityIntID {
 
     @Column(name = "latitude")
     private Double latitude;
