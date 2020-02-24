@@ -8,3 +8,11 @@ CREATE TABLE prozacto_user (
   specialization VARCHAR(100),
   subSpecialization VARCHAR(100)
 );
+
+CREATE TABLE location(
+    id INT AUTO_INCREMENT  PRIMARY KEY,
+    latitude DOUBLE,
+    longitude DOUBLE,
+    landmark VARCHAR(255),
+    address VARCHAR(255)
+)
