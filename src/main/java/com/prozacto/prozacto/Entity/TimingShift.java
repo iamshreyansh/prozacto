@@ -15,4 +15,10 @@ import javax.persistence.Entity;
 @Entity(name = "timingShift")
 @Where(clause = "deleted = 0")
 public class TimingShift extends BaseEntityIntID{
+
+    private Integer enrollmentId;
+
+    private String fromTime;
+
+    private String toDate;
 }

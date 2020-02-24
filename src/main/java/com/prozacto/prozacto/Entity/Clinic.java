@@ -1,5 +1,6 @@
 package com.prozacto.prozacto.Entity;
 
+import com.prozacto.prozacto.Entity.Location.Location;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
