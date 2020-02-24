@@ -13,7 +13,6 @@ import javax.persistence.Entity;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-
 @Entity(name = "Patient")
 @Where(clause = "deleted = 0")
 public class Patient {
