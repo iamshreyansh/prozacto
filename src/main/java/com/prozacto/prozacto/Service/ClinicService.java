@@ -1,13 +1,9 @@
-package com.prozacto.prozacto.Service;
+package com.prozacto.prozacto.service;
 
-import com.prozacto.prozacto.Entity.Clinic.Clinic;
-
+import com.prozacto.prozacto.Entity.Clinic;
 import com.prozacto.prozacto.converter.ClinicConverter;
-
 import com.prozacto.prozacto.dao.ClinicDao;
-
 import com.prozacto.prozacto.model.ClinicDto;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

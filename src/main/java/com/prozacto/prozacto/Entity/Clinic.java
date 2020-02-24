@@ -22,6 +22,5 @@ public class Clinic extends BaseEntityIntID {
     @Column(name = "name")
     private String name;
 
-    @Embedded
-    private Location location;
+    private Integer locationId;
 }

@@ -1,9 +1,8 @@
 package com.prozacto.prozacto.converter;
 
-import com.prozacto.prozacto.Entity.Clinic.Clinic;
+import com.prozacto.prozacto.Entity.Clinic;
 import com.prozacto.prozacto.Entity.User.User;
 import com.prozacto.prozacto.model.ClinicDto;
-
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 

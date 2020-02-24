@@ -1,5 +1,6 @@
 package com.prozacto.prozacto.Entity.User;
 
+import com.prozacto.prozacto.Entity.BaseEntityIntID;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,7 +16,7 @@ import javax.persistence.Entity;
 @Builder
 @Entity(name = "Patient")
 @Where(clause = "deleted = 0")
-public class Patient {
+public class Patient extends BaseEntityIntID {
 
     @Column(name = "user_id")
     private Integer userId;
