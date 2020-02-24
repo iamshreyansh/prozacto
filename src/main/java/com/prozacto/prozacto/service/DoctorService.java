@@ -1,6 +1,5 @@
 package com.prozacto.prozacto.service;
 
-import com.prozacto.prozacto.Entity.Clinic;
 import com.prozacto.prozacto.Entity.Enrollment;
 import com.prozacto.prozacto.Entity.User.Doctor;
 import com.prozacto.prozacto.dao.DoctorDao;
@@ -26,7 +25,7 @@ public class DoctorService {
 
     public List<Doctor> findDoctorByClinicId(Integer clinicId){
         List<Enrollment> enrollments = enrollmentDao.findAllByClinicId(clinicId);
-        List<Integer> doctorIds = enrollments.stream().map(Enrollment::getDoctorId).collect(Collectors.toList());
+        List<Integer> doctorIds = enrollments.stream().map(Enrollment::getUserId).collect(Collectors.toList());
         return doctorDao.findAllByIdIn(doctorIds);
     }
 }
