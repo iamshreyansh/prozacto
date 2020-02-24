@@ -3,6 +3,7 @@ package com.prozacto.prozacto.service;
 import com.prozacto.prozacto.Entity.Enrollment;
 import com.prozacto.prozacto.Entity.TimingShift;
 import com.prozacto.prozacto.dao.EnrollmentDao;
+import com.prozacto.prozacto.dao.TimingShiftDao;
 import com.prozacto.prozacto.model.EnrollmentDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +18,8 @@ public class EnrollmentService {
 
     @Autowired EnrollmentDao enrollmentDao;
 
-    @Autowired TimingShiftDao timingShiftDao;
+    @Autowired
+    TimingShiftDao timingShiftDao;
 
     public Enrollment findById(Integer id) throws Exception {
         if (id == null || id == 0) {
@@ -45,5 +47,10 @@ public class EnrollmentService {
             timingShift.setEnrollmentId(enrollment.getId());
         }
         timingShiftDao.saveAll(timingShiftList);
+        return enrollment;
+    }
+
+    public List<Enrollment> findAllByClinicId(Integer clinicId) throws Exception {
+        return enrollmentDao.findAllByClinicId(clinicId);
     }
 }
