@@ -14,7 +14,6 @@ import javax.persistence.Entity;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-
 @Entity(name = "location")
 @Where(clause = "deleted = 0")
 public class Location extends BaseEntityIntID {

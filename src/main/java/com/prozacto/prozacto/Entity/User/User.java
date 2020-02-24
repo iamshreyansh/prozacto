@@ -19,6 +19,9 @@ import javax.persistence.Entity;
 @Where(clause = "deleted = 0")
 public class User extends BaseEntityIntID {
 
+    @Column(name = "name")
+    private String name;
+
     @Column(name = "username")
     private String username;
 
