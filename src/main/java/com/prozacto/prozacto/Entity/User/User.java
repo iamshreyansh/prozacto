@@ -20,11 +20,14 @@ import javax.persistence.Entity;
 public class User extends BaseEntityIntID {
 
     @Column(name = "username")
-    String username;
+    private String username;
 
     @Column(name = "email")
-    String email;
+    private String email;
 
     @Column(name = "contact_number")
-    String contactNumber;
+    private String contactNumber;
+
+    @Column(name = "age")
+    private Integer age;
 }
