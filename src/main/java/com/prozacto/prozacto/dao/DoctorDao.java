@@ -8,5 +8,4 @@ import java.util.List;
 public interface DoctorDao extends JpaRepository<Doctor, Integer> {
 
     List<Doctor> findAllByIdIn(List<Integer> ids);
-    List<Doctor> findAllByNa
 }
