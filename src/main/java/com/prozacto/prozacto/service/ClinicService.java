@@ -26,8 +26,8 @@ public class ClinicService {
         Optional<Clinic> clinic = clinicDao.findById(id);
         if(clinic.isPresent())
             return clinicConverter.convertEntityToModel(clinic.get());
-        else
-            return null;
+
+        return null;
     }
 
     public ClinicDto create(ClinicDto clinicDto)

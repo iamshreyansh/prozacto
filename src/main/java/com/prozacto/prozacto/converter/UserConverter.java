@@ -9,6 +9,9 @@ import com.prozacto.prozacto.model.DoctorDto;
 import com.prozacto.prozacto.model.UserDto;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 @Service
 public class UserConverter {
@@ -56,5 +59,23 @@ public class UserConverter {
         userDto.setUserType(user.getUserType());
 
         return userDto;
+    }
+
+    public List<UserDto> convert(List<User> users)
+    {
+        List<UserDto> userDtoList = new ArrayList<>();
+        for(User user : users)
+        {
+            UserDto userDto = new UserDto();
+            userDto.setAge(user.getAge());
+            userDto.setContactNumber(user.getContactNumber());
+            userDto.setEmail(user.getEmail());
+            userDto.setId(user.getId());
+            userDto.setUsername(user.getUsername());
+            userDto.setUserType(user.getUserType());
+            userDtoList.add(userDto);
+        }
+
+        return userDtoList;
     }
 }

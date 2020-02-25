@@ -27,7 +27,7 @@ public class DoctorService {
         return doctorDao.save(doctor);
     }
 
-    public List<Doctor> findDoctorByClinicId(Integer clinicId) throws Exception {
+    public List<Doctor> findDoctorsByClinicId(Integer clinicId) throws Exception {
         List<Enrollment> enrollments = enrollmentService.findAllByClinicId(clinicId);
         List<Integer> doctorIds = enrollments.stream().map(Enrollment::getUserId).collect(Collectors.toList());
         return doctorDao.findAllByIdIn(doctorIds);

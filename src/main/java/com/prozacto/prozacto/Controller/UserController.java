@@ -1,9 +1,12 @@
 package com.prozacto.prozacto.Controller;
 
 import com.prozacto.prozacto.model.UserDto;
+import com.prozacto.prozacto.model.UserRequestDto;
 import com.prozacto.prozacto.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 
 @RestController
@@ -13,9 +16,9 @@ public class UserController {
     @Autowired
     UserService userService;
 
-    @GetMapping("/greeting")
-    public String greeting(@RequestParam(value = "name", defaultValue = "World") String name) {
-        return new String("Sinayak Wing");
+    @PostMapping("/info")
+    public UserDto getUserDetails(@RequestBody UserRequestDto userRequestDto) throws Exception{
+        return userService.getDetails(userRequestDto);
     }
 
     @PostMapping("")
@@ -23,5 +26,10 @@ public class UserController {
         return userService.create(userDto);
     }
 
+    @GetMapping("/type")
+    public List<UserDto> getUsersByType(Integer userType)
+    {
+        return userService.getUsersByType(userType);
+    }
 
 }
