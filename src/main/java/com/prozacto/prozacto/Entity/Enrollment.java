@@ -16,7 +16,7 @@ import javax.persistence.Entity;
 @Where(clause = "deleted = 0")
 public class Enrollment extends BaseEntityIntID{
 
-    private Integer userId;
+    private Integer doctorId;
 
     private Integer clinicId;
 

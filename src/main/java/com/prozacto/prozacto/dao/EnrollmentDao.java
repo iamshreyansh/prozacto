@@ -9,5 +9,5 @@ import java.util.Optional;
 public interface EnrollmentDao extends JpaRepository<Enrollment, Integer> {
     Optional<Enrollment> findById(Integer id);
     List<Enrollment> findAllByClinicId(Integer clinicId);
-    Enrollment findByUserId(Integer doctorId);
+    List<Enrollment> findAllByDoctorId(Integer doctorId);
 }

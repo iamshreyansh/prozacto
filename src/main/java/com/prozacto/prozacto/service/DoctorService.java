@@ -23,21 +23,28 @@ public class DoctorService {
     @Autowired
     UserService userService;
 
-    public Doctor addDoctor(Doctor doctor){
+    public Doctor addDoctor(Doctor doctor) {
         return doctorDao.save(doctor);
     }
 
     public List<Doctor> findDoctorsByClinicId(Integer clinicId) throws Exception {
         List<Enrollment> enrollments = enrollmentService.findAllByClinicId(clinicId);
-        List<Integer> doctorIds = enrollments.stream().map(Enrollment::getUserId).collect(Collectors.toList());
+        List<Integer> doctorIds = enrollments.stream().map(Enrollment::getDoctorId).collect(Collectors.toList());
         return doctorDao.findAllByIdIn(doctorIds);
     }
 
 
-    public List<Doctor> findByName(String name){
+    public List<Doctor> findByName(String name) {
 
-        List<User> users = userService.findAllByUserNameAndType("%"+name+"%", UserType.DOCTOR.getId());
+        List<User> users = userService.findAllByUserNameAndType("%" + name + "%", UserType.DOCTOR.getId());
         List<Integer> userIds = users.stream().map(User::getId).collect(Collectors.toList());
         return doctorDao.findAllByIdIn(userIds);
+    }
+
+    public Doctor findIfExists(Integer doctorId) throws Exception {
+        Doctor doctor = doctorDao.findById(doctorId).orElse(null);
+        if (doctor == null)
+            throw new Exception("No Doctor Found with Id: " + doctorId);
+        return doctor;
     }
 }

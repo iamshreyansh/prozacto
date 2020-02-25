@@ -12,8 +12,10 @@ import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 
 /**
@@ -47,7 +49,7 @@ public class EnrollmentService {
 
         Enrollment enrollment = Enrollment.builder()
                                 .clinicId(enrollmentDto.getClinicId())
-                                .userId(enrollmentDto.getDoctorId())
+                                .doctorId(enrollmentDto.getDoctorId())
                                 .consultationFee(enrollmentDto.getConsultationFee())
                                 .numOfPatients(enrollmentDto.getNumOfPatients())
                                 .build();
@@ -111,6 +113,31 @@ public class EnrollmentService {
             return m1.getStart() - m2.getStart();
         });
         return intervals;
+    }
+
+    public List<EnrollmentDto> findAllByDoctorId(Integer doctorId){
+        List<Enrollment> enrollments = enrollmentDao.findAllByDoctorId(doctorId);
+        return convertEntityToModel(enrollments);
+    }
+
+    public EnrollmentDto convertEntityToModel(Enrollment enrollment){
+        if(enrollment == null)
+            return null;
+
+        return EnrollmentDto.builder()
+                 .id(enrollment.getId())
+                .clinicId(enrollment.getClinicId())
+                .doctorId(enrollment.getDoctorId())
+                .consultationFee(enrollment.getConsultationFee())
+                .numOfPatients(enrollment.getNumOfPatients())
+                .build();
+    }
+
+    public List<EnrollmentDto> convertEntityToModel(List<Enrollment> enrollments){
+        if(CollectionUtils.isEmpty(enrollments))
+            return Collections.emptyList();
+
+        return enrollments.stream().map(this::convertEntityToModel).collect(Collectors.toList());
     }
 
 }

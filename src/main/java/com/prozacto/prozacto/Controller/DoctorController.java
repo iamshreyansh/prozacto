@@ -23,4 +23,9 @@ public class DoctorController {
     public List<Doctor> findByName(@RequestParam("name") String name){
         return doctorService.findByName(name);
     }
+
+    @GetMapping("/requestAccess")
+    public String requestDocumentAccess(@RequestParam("patientId") Integer patientId, @RequestParam("doctorId") Integer doctorId) throws Exception {
+        doctorService.requestDocumentAccess(doctorId, patientId);
+    }
 }
