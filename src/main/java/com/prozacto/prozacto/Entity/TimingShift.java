@@ -20,5 +20,5 @@ public class TimingShift extends BaseEntityIntID{
 
     private String fromTime;
 
-    private String toDate;
+    private String toTime;
 }
