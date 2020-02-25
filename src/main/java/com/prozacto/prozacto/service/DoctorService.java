@@ -4,6 +4,7 @@ import com.prozacto.prozacto.Entity.Enrollment;
 import com.prozacto.prozacto.Entity.User.Doctor;
 import com.prozacto.prozacto.Entity.User.User;
 import com.prozacto.prozacto.dao.DoctorDao;
+import com.prozacto.prozacto.model.EnrollmentDto;
 import com.prozacto.prozacto.model.enums.UserType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,9 @@ public class DoctorService {
 
     @Autowired
     EnrollmentService enrollmentService;
+
+    @Autowired
+    DocumentPermissionService documentPermissionService;
 
     @Autowired
     UserService userService;
@@ -46,5 +50,11 @@ public class DoctorService {
         if (doctor == null)
             throw new Exception("No Doctor Found with Id: " + doctorId);
         return doctor;
+    }
+
+    public boolean requestDocumentAccess(Integer doctorId, Integer patientId) throws Exception {
+        List<EnrollmentDto> enrollmentDtos = enrollmentService.findAllByDoctorId(doctorId);
+        List<Integer> clinicIds = enrollmentDtos.stream().map(EnrollmentDto::getClinicId).collect(Collectors.toList());
+        return documentPermissionService.requestDocumentAccess(clinicIds, patientId, doctorId);
     }
 }
