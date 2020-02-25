@@ -36,7 +36,7 @@ public class DoctorService {
 
     public List<Doctor> findByName(String name){
 
-        List<User> users = userService.findAllByUserNameAndType(name, UserType.DOCTOR.getId());
+        List<User> users = userService.findAllByUserNameAndType("%"+name+"%", UserType.DOCTOR.getId());
         List<Integer> userIds = users.stream().map(User::getId).collect(Collectors.toList());
         return doctorDao.findAllByIdIn(userIds);
     }

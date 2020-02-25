@@ -6,6 +6,7 @@ import com.prozacto.prozacto.converter.UserConverter;
 import com.prozacto.prozacto.dao.DoctorDao;
 import com.prozacto.prozacto.dao.UserDao;
 import com.prozacto.prozacto.model.UserDto;
+import com.prozacto.prozacto.model.enums.UserType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
@@ -32,7 +33,7 @@ public class UserService {
 
         validate(userDto);
 
-        if(userDto.getUserType() == 2)
+        if(userDto.getUserType() == UserType.DOCTOR.getId())
         {
             User user = userDao.save(userConverter.convert(userDto));
 

@@ -12,6 +12,9 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Doctor Enrolls with a clinic
+ */
 @Service
 @Slf4j
 public class EnrollmentService {
@@ -30,10 +33,10 @@ public class EnrollmentService {
             throw new Exception("Enrollment not present");
         }
 
-        Enrollment enrollment = enrollmentOptional.get();
-        return enrollment;
+        return enrollmentOptional.get();
     }
 
+    // TODO: Check For OverLapping Shifts
     public Enrollment enrollDoctor(EnrollmentDto enrollmentDto) throws Exception {
         Enrollment enrollment = Enrollment.builder()
                                 .clinicId(enrollmentDto.getClinicId())

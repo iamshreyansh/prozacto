@@ -1,10 +1,7 @@
 DROP TABLE IF EXISTS prozacto_user;
-  
-CREATE TABLE prozacto_user (
-  id INT AUTO_INCREMENT  PRIMARY KEY,
-  username VARCHAR(250) NOT NULL,
-  email VARCHAR(250) DEFAULT NULL,
-  contactNumber VARCHAR(10),
-  specialization VARCHAR(100),
-  subSpecialization VARCHAR(100)
-);
+
+-- INSERT INTO USER VALUES(1,CURRENT_TIMESTAMP,0,false,CURRENT_TIMESTAMP,0, 20, 1234, 'a.c@x.y', 'shreyansh', 'abc', 2,' shreyansh');
+-- INSERT INTO USER VALUES(2,CURRENT_TIMESTAMP,0,false,CURRENT_TIMESTAMP,0, 25, 9090, 'ac@x.com', 'vignesh', 'abc', 12,' vignesh');
+-- INSERT INTO USER VALUES(3,CURRENT_TIMESTAMP,0,false,CURRENT_TIMESTAMP,0, 46, 9090, 'ac@x.com', 'piddu', 'abc', 12,' piddu');
+--
+-- INSERT INTO DOCTOR VALUES(1,CURRENT_TIMESTAMP,0,false,CURRENT_TIMESTAMP,0,'NUEROLOGIST','SURGEON',1);

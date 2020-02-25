@@ -32,26 +32,23 @@ public class ClinicService {
 
     public ClinicDto create(ClinicDto clinicDto)
     {
-        Clinic clinic = clinicDao.save(clinicConverter.convertModelToEntity(clinicDto));
-        ClinicDto insertedClinicDto =  clinicConverter.convertEntityToModel(clinic);
-        Location location = locationDao.findById(insertedClinicDto.getLocationId()).get();
+        Location location;
         LocationDto locationDto = new LocationDto();
-        if(location == null)
-        {
 
-            locationDto.setId(clinicDto.getLocationId());
-            locationDto.setAddress(clinicDto.getLocationDto().getAddress());
-            locationDto.setLandmark(clinicDto.getLocationDto().getLandmark());
-            locationDto.setLatitude(clinicDto.getLocationDto().getLatitude());
-            locationDto.setLongitude(clinicDto.getLocationDto().getLongitude());
-            location = locationDao.save(locationConverter.convertModelToEntity(locationDto ));
-        }
-        else {
-            locationDto = locationConverter.convertEntityToModel(location);
-        }
-        insertedClinicDto.setLocationDto(locationDto);
-        insertedClinicDto.setLocationId(location.getId());
+        locationDto.setId(clinicDto.getLocationId());
+        locationDto.setAddress(clinicDto.getLocationDto().getAddress());
+        locationDto.setLandmark(clinicDto.getLocationDto().getLandmark());
+        locationDto.setLatitude(clinicDto.getLocationDto().getLatitude());
+        locationDto.setLongitude(clinicDto.getLocationDto().getLongitude());
+        location = locationDao.save(locationConverter.convertModelToEntity(locationDto));
+        locationDto = locationConverter.convertEntityToModel(location);
 
-        return insertedClinicDto;
+        clinicDto.setLocationId(locationDto.getId());
+        Clinic clinic = clinicDao.save(clinicConverter.convertModelToEntity(clinicDto));
+        clinicDto =  clinicConverter.convertEntityToModel(clinic);
+        clinicDto.setLocationDto(locationDto);
+        clinicDto.setLocationId(location.getId());
+
+        return clinicDto;
     }
 }

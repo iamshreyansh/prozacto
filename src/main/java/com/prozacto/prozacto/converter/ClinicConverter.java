@@ -18,7 +18,7 @@ public class ClinicConverter implements BaseConverter<Clinic, ClinicDto>  {
     public Clinic convertModelToEntity(ClinicDto model) {
         Clinic clinic = Clinic.builder()
                 .name(model.getName())
-                .locationId(model.getLocationDto().getId())
+                .locationId(model.getLocationId())
                 .build();
 
         return clinic;
@@ -28,7 +28,7 @@ public class ClinicConverter implements BaseConverter<Clinic, ClinicDto>  {
     public ClinicDto convertEntityToModel(Clinic entity) {
         return ClinicDto.builder()
                 .name(entity.getName())
-                .locationId(entity.getId())
+                .locationId(entity.getLocationId())
                 .build();
     }
 

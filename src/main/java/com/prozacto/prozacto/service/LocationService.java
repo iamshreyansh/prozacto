@@ -17,10 +17,7 @@ public class LocationService {
 
     public LocationDto getLocationById(Integer id)
     {
-        Optional<Location> location = locationDao.findById(id);
-        if(location.isPresent())
-            return locationConverter.convertEntityToModel(location.get());
-        else
-            return null;
+        Location location = locationDao.findById(id).orElse(null);
+        return locationConverter.convertEntityToModel(location);
     }
 }

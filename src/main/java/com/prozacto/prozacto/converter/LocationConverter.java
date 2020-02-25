@@ -16,6 +16,9 @@ public class LocationConverter implements BaseConverter<Location, LocationDto> {
 
     @Override
     public Location convertModelToEntity(LocationDto model) {
+        if(model == null)
+            return null;
+
         Location location = Location.builder()
                 .latitude(model.getLatitude())
                 .longitude(model.getLongitude())
@@ -23,16 +26,21 @@ public class LocationConverter implements BaseConverter<Location, LocationDto> {
                 .address(model.getAddress())
                 .build();
 
+        location.setId(model.getId());
         return location;
     }
 
     @Override
     public LocationDto convertEntityToModel(Location entity) {
+        if(entity == null)
+            return null;
+
         return LocationDto.builder()
                 .latitude(entity.getLatitude())
                 .longitude(entity.getLongitude())
                 .landmark(entity.getLandmark())
                 .address(entity.getAddress())
+                .id(entity.getId())
                 .build();
     }
 
@@ -40,7 +48,7 @@ public class LocationConverter implements BaseConverter<Location, LocationDto> {
     public List<Location> convertModelToEntity(List<LocationDto> modelList) {
         if(CollectionUtils.isEmpty(modelList))
             return new ArrayList<>();
-        return modelList.stream().map(m -> convertModelToEntity(m)).collect(Collectors.toList());
+        return modelList.stream().map(this::convertModelToEntity).collect(Collectors.toList());
     }
 
     @Override
