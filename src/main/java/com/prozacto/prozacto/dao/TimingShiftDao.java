@@ -3,6 +3,8 @@ package com.prozacto.prozacto.dao;
 import com.prozacto.prozacto.Entity.TimingShift;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface TimingShiftDao extends JpaRepository<TimingShift, Integer> {
+import java.util.List;
 
+public interface TimingShiftDao extends JpaRepository<TimingShift, Integer> {
+    List<TimingShift> findAllByEnrollmentId(Integer enrolmentId);
 }
