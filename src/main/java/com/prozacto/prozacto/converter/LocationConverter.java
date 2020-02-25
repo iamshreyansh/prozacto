@@ -2,7 +2,7 @@ package com.prozacto.prozacto.converter;
 
 
 import com.prozacto.prozacto.Entity.Location.Location;
-import com.prozacto.prozacto.Entity.User.User;
+
 import com.prozacto.prozacto.model.LocationDto;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 public class LocationConverter implements BaseConverter<Location, LocationDto> {
 
     @Override
-    public Location convertModelToEntity(LocationDto model , User user) {
+    public Location convertModelToEntity(LocationDto model) {
         Location location = Location.builder()
                 .latitude(model.getLatitude())
                 .longitude(model.getLongitude())
@@ -37,10 +37,10 @@ public class LocationConverter implements BaseConverter<Location, LocationDto> {
     }
 
     @Override
-    public List<Location> convertModelToEntity(List<LocationDto> modelList , User user) {
+    public List<Location> convertModelToEntity(List<LocationDto> modelList) {
         if(CollectionUtils.isEmpty(modelList))
             return new ArrayList<>();
-        return modelList.stream().map(m -> convertModelToEntity(m,user)).collect(Collectors.toList());
+        return modelList.stream().map(m -> convertModelToEntity(m)).collect(Collectors.toList());
     }
 
     @Override
@@ -51,7 +51,7 @@ public class LocationConverter implements BaseConverter<Location, LocationDto> {
     }
 
     @Override
-    public void applyChanges(Location entity, LocationDto Model, User user) {
+    public void applyChanges(Location entity, LocationDto Model) {
 
     }
 }

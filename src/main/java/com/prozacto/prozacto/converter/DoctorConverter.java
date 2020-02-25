@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 public class DoctorConverter implements BaseConverter<Doctor, DoctorDto> {
 
     @Override
-    public Doctor convertModelToEntity(DoctorDto model, User user) {
+    public Doctor convertModelToEntity(DoctorDto model) {
         Doctor doctor = Doctor.builder()
                 .specialization(model.getSpecialization())
                 .subSpecialization(model.getSubSpecialization())
@@ -34,10 +34,10 @@ public class DoctorConverter implements BaseConverter<Doctor, DoctorDto> {
     }
 
     @Override
-    public List<Doctor> convertModelToEntity(List<DoctorDto> modelList, User user) {
+    public List<Doctor> convertModelToEntity(List<DoctorDto> modelList) {
         if(CollectionUtils.isEmpty(modelList))
             return new ArrayList<>();
-        return modelList.stream().map(m -> convertModelToEntity(m, user)).collect(Collectors.toList());
+        return modelList.stream().map(m -> convertModelToEntity(m)).collect(Collectors.toList());
     }
 
     @Override
@@ -48,7 +48,7 @@ public class DoctorConverter implements BaseConverter<Doctor, DoctorDto> {
     }
 
     @Override
-    public void applyChanges(Doctor entity, DoctorDto Model, User user) {
+    public void applyChanges(Doctor entity, DoctorDto Model) {
 
     }
 }

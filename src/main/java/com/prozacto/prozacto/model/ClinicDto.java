@@ -13,4 +13,5 @@ public class ClinicDto {
 
     private String name;
     private Integer locationId;
+    private LocationDto locationDto;
 }
