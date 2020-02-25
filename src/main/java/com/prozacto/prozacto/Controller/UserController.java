@@ -1,9 +1,7 @@
 package com.prozacto.prozacto.Controller;
 
-import java.util.concurrent.atomic.AtomicLong;
-
-import com.prozacto.prozacto.Entity.User.User;
-import com.prozacto.prozacto.dao.UserDao;
+import com.prozacto.prozacto.model.UserDto;
+import com.prozacto.prozacto.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,10 +9,9 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/user")
 public class UserController {
-    private static final String template = "Hello, %s!";
-    private final AtomicLong counter = new AtomicLong();
+
     @Autowired
-    UserDao userDao;
+    UserService userService;
 
     @GetMapping("/greeting")
     public String greeting(@RequestParam(value = "name", defaultValue = "World") String name) {
@@ -22,8 +19,8 @@ public class UserController {
     }
 
     @PostMapping("")
-    public User addUser(@RequestBody User user){
-        return userDao.save(user);
+    public UserDto addUser(@RequestBody UserDto userDto){
+        return userService.create(userDto);
     }
 
 

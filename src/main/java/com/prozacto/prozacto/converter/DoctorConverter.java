@@ -19,9 +19,8 @@ public class DoctorConverter implements BaseConverter<Doctor, DoctorDto> {
         Doctor doctor = Doctor.builder()
                 .specialization(model.getSpecialization())
                 .subSpecialization(model.getSubSpecialization())
-                .userId(model.getUserDto().getId())
                 .build();
-        doctor.setId(model.getId());
+        doctor.setId(model.getUserId());
         return doctor;
     }
 
@@ -30,8 +29,7 @@ public class DoctorConverter implements BaseConverter<Doctor, DoctorDto> {
         return DoctorDto.builder()
                 .specialization(entity.getSpecialization())
                 .subSpecialization(entity.getSubSpecialization())
-                .id(entity.getId())
-                .userDto(new UserDto(entity.getId()))
+                .userId(entity.getUserId())
                 .build();
     }
 

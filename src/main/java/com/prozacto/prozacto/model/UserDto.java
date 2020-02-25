@@ -19,7 +19,6 @@ public class UserDto {
     private Integer age;
     private Integer userType;
 
-    public UserDto(Integer id){
-        this.id = id;
-    }
+    private DoctorDto doctorDetails;
+
 }

@@ -11,8 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class DoctorDto {
 
-    private UserDto userDto;
-    private Integer id;
+    private Integer userId;
     private SpecializationEnum specialization;
     private SubSpecializationEnum subSpecialization;
 }

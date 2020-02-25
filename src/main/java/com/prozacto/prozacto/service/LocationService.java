@@ -1,4 +1,4 @@
-package com.prozacto.prozacto.Service;
+package com.prozacto.prozacto.service;
 
 import com.prozacto.prozacto.Entity.Location.Location;
 import com.prozacto.prozacto.converter.LocationConverter;

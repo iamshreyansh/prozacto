@@ -4,7 +4,6 @@ import com.prozacto.prozacto.Entity.Enrollment;
 import com.prozacto.prozacto.Entity.User.Doctor;
 import com.prozacto.prozacto.Entity.User.User;
 import com.prozacto.prozacto.dao.DoctorDao;
-import com.prozacto.prozacto.dao.EnrollmentDao;
 import com.prozacto.prozacto.model.enums.UserType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
