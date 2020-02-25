@@ -23,15 +23,6 @@ import java.util.*;
 @Slf4j
 public class EnrollmentService {
 
-    @Builder
-    @Data
-    @NoArgsConstructor
-    @AllArgsConstructor
-    class Interval {
-        Integer start;
-        Integer end;
-    }
-
     @Autowired EnrollmentDao enrollmentDao;
 
     @Autowired
@@ -137,12 +128,21 @@ public class EnrollmentService {
             intervals.add(interval);
         }
 
-        Collections.sort(intervals, (m1, m2) -> {
-            if(m1.getStart() == m2.getStart())
+        intervals.sort((m1, m2) -> {
+            if (m1.getStart().equals(m2.getStart()))
                 return m1.getEnd() - m2.getEnd();
-            return m1.getStart()- m2.getStart();
+            return m1.getStart() - m2.getStart();
         });
         return intervals;
     }
 
+}
+
+@Builder
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+class Interval {
+    Integer start;
+    Integer end;
 }
