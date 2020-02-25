@@ -43,7 +43,7 @@ public class EnrollmentService {
     public Enrollment enrollDoctor(EnrollmentDto enrollmentDto) throws Exception {
 
         validate(enrollmentDto.getTimingShifts()); //Validate the new shifts
-        validate(enrollmentDto); // Check For OverLapping Shifts with existing shifts if any.
+//        validate(enrollmentDto); // Check For OverLapping Shifts with existing shifts if any.
 
         Enrollment enrollment = Enrollment.builder()
                                 .clinicId(enrollmentDto.getClinicId())
@@ -64,29 +64,6 @@ public class EnrollmentService {
         return enrollmentDao.findAllByClinicId(clinicId);
     }
 
-    public boolean validate(EnrollmentDto enrollmentDto) throws Exception
-    {
-        Enrollment enrollment = enrollmentDao.findByUserId(enrollmentDto.getDoctorId());
-
-        List<TimingShift> currentTimingShifts = timingShiftDao.findAllByEnrollmentId(enrollment.getId());
-
-        List<Interval> intervals = getIntervals(currentTimingShifts);
-
-        for(TimingShift timingShift : enrollmentDto.getTimingShifts())
-        {
-            Integer startTime = Integer.parseInt(timingShift.getFromTime().replace(":" , ""));
-            Integer endTime = Integer.parseInt(timingShift.getToTime().replace(":" , ""));
-            for (Interval interval : intervals)
-            {
-                Integer start = interval.getStart();
-                Integer end = interval.getEnd();
-                if(!(startTime < start && endTime < start) || !(startTime > end))
-                    throw new Exception("Overlapping Shifts found!");
-            }
-        }
-
-        return true;
-    }
 
     public boolean validate(List<TimingShift> timingShifts) throws Exception
     {
@@ -107,7 +84,7 @@ public class EnrollmentService {
             Integer currEnd = intervals.get(i).getEnd();
             Integer nextStart = intervals.get(i+1).getStart();
             Integer nextEnd = intervals.get(i+1).getEnd();
-            if(!(currStart < nextStart && currEnd < nextEnd) || !(currStart > nextEnd))
+            if(!(currStart < nextStart && currEnd < nextEnd))
                 throw new Exception("Overlapping Shifts found in Dto!");
 
         }
