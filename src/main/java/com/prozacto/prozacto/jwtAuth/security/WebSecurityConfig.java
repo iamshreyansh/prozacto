@@ -8,6 +8,7 @@ import com.prozacto.prozacto.jwtAuth.CustomEntryPoint;
 import com.prozacto.prozacto.jwtAuth.RolesDataDTO;
 import com.prozacto.prozacto.jwtAuth.model.Role;
 import com.prozacto.prozacto.jwtAuth.service.AuthUserService;
+import com.prozacto.prozacto.service.CacheService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -44,8 +45,12 @@ import static com.prozacto.prozacto.jwtAuth.security.Constants.SIGN_UP_URL;
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+
     @Autowired
     AuthConfiguration authConfiguration;
+
+    @Autowired
+    CacheService cacheService;
 
     @Override
     public void configure(WebSecurity web) throws Exception {
@@ -76,7 +81,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         // http.exceptionHandling().accessDeniedPage("/users/login");
 
         // Apply JWT
-        http.apply(new JwtTokenFilterConfigurer( jwtTokenProvider));
+        http.apply(new JwtTokenFilterConfigurer( jwtTokenProvider, cacheService));
 
         // Optional, if you want to test the API from a browser
          http.httpBasic();

@@ -17,13 +17,12 @@ import java.io.IOException;
 // We should use OncePerRequestFilter since we are doing a database call, there is no point in doing this more than once
 public class JwtTokenFilter extends OncePerRequestFilter {
 
-    @Autowired
-    CacheService cacheService;
-
     private JwtTokenProvider jwtTokenProvider;
+    private CacheService cacheService;
 
-    public JwtTokenFilter(JwtTokenProvider jwtTokenProvider) {
+    public JwtTokenFilter(JwtTokenProvider jwtTokenProvider, CacheService cacheService) {
         this.jwtTokenProvider = jwtTokenProvider;
+        this.cacheService = cacheService;
     }
 
     @Override
