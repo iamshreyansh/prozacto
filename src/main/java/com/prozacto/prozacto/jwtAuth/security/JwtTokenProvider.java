@@ -2,6 +2,7 @@ package com.prozacto.prozacto.jwtAuth.security;
 
 import com.prozacto.prozacto.jwtAuth.exception.CustomException;
 import com.prozacto.prozacto.jwtAuth.model.Role;
+import com.prozacto.prozacto.service.CacheService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
@@ -11,7 +12,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
@@ -54,6 +54,7 @@ public class JwtTokenProvider {
                 .setExpiration(validity)//
                 .signWith(SignatureAlgorithm.HS256, secretKey)//
                 .compact();
+
     }
 
     public Authentication getAuthentication(String token) {

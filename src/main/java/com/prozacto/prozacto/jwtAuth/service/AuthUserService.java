@@ -1,5 +1,6 @@
 package com.prozacto.prozacto.jwtAuth.service;
 
+import com.google.common.cache.Cache;
 import com.prozacto.prozacto.Entity.User.User;
 import com.prozacto.prozacto.dao.UserDao;
 import com.prozacto.prozacto.jwtAuth.exception.CustomException;
@@ -7,6 +8,7 @@ import com.prozacto.prozacto.jwtAuth.model.Role;
 import com.prozacto.prozacto.jwtAuth.security.JwtTokenProvider;
 import com.prozacto.prozacto.jwtAuth.utils.Hashing;
 import com.prozacto.prozacto.model.enums.UserType;
+import com.prozacto.prozacto.service.CacheService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -34,12 +36,17 @@ public class AuthUserService {
     @Autowired
     private AuthenticationManager authenticationManager;
 
+    @Autowired
+    private CacheService cacheService;
+
     public String signin(String username, String password) {
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
             User user = userRepository.findByName(username);
             List<Role> userRoles = getUserRoles(user);
-            return jwtTokenProvider.createToken(username, userRoles);
+            String jwtToken = jwtTokenProvider.createToken(username, userRoles);
+            cacheService.setUser(jwtToken, user);
+            return jwtToken;
         } catch (AuthenticationException e) {
             throw new CustomException("Invalid username/password supplied" , HttpStatus.UNPROCESSABLE_ENTITY);
         }

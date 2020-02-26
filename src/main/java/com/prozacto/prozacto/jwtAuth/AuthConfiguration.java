@@ -12,4 +12,10 @@ public class AuthConfiguration {
 
     @Value("${rolesFilePath}")
     private String rolesFilePath;
+
+    @Value("${validityInMilliseconds}")
+    private Integer validityInMilliseconds;
+
+    @Value("${cacheMaxSize}")
+    private Integer cacheMaxSize;
 }
