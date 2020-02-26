@@ -7,6 +7,6 @@
   {
     "url": "/doctor/filter",
     "type": "read",
-    "rolesList": "PATIENT"
+    "rolesList": "DOCTOR"
   }
 ]

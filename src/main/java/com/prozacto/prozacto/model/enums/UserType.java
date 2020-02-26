@@ -5,7 +5,8 @@ import lombok.Getter;
 @Getter
 public enum  UserType {
     PATIENT(1),
-    DOCTOR(2);
+    DOCTOR(2),
+    ADMIN(3);
 
     private final int id;
 

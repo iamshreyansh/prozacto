@@ -6,6 +6,7 @@ import com.prozacto.prozacto.jwtAuth.exception.CustomException;
 import com.prozacto.prozacto.jwtAuth.model.Role;
 import com.prozacto.prozacto.jwtAuth.security.JwtTokenProvider;
 import com.prozacto.prozacto.jwtAuth.utils.Hashing;
+import com.prozacto.prozacto.model.enums.UserType;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -36,7 +37,9 @@ public class AuthUserService {
     public String signin(String username, String password) {
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
-            return jwtTokenProvider.createToken(username, userRepository.findByName(username).getRoles());
+            User user = userRepository.findByName(username);
+            List<Role> userRoles = getUserRoles(user);
+            return jwtTokenProvider.createToken(username, userRoles);
         } catch (AuthenticationException e) {
             throw new CustomException("Invalid username/password supplied" , HttpStatus.UNPROCESSABLE_ENTITY);
         }
@@ -45,7 +48,7 @@ public class AuthUserService {
     public String signup(User user) {
         if (!userRepository.existsByName(user.getUsername())) {
             user.setPassword(Hashing.getEncoder().encode(user.getPassword()));
-            userRepository.save(user);
+            user = userRepository.save(user);
             List<Role> roles = getUserRoles(user);
             return jwtTokenProvider.createToken(user.getUsername(), roles);
         } else {
@@ -53,17 +56,18 @@ public class AuthUserService {
         }
     }
 
-    private List<Role> getUserRoles(User user) {
+    public List<Role> getUserRoles(User user) {
         List<Role> roleList = new ArrayList<>();
-        for(String role : user.getRolesList())
-        {
-            switch (role){
-                case "PATIENT": roleList.add(Role.PATIENT); break;
-                case "DOCTOR": roleList.add(Role.DOCTOR); break;
-                case "ADMIN": roleList.add(Role.ADMIN); break;
-                default:
-                    log.info("Un Identified Role : {}", role);
-            }
+        Integer userType = user.getUserType();
+
+        if (userType == UserType.PATIENT.getId()) {
+            roleList.add(Role.PATIENT);
+        } else if (userType == UserType.DOCTOR.getId()) {
+            roleList.add(Role.DOCTOR);
+        } else if (userType == UserType.ADMIN.getId()) {
+            roleList.add(Role.ADMIN);
+        } else {
+            log.info("Un Identified Role : {}", userType);
         }
         return roleList;
     }
