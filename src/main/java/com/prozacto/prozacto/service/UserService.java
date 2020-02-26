@@ -1,12 +1,16 @@
 package com.prozacto.prozacto.service;
 
 import com.prozacto.prozacto.Entity.User.Doctor;
+import com.prozacto.prozacto.Entity.User.Patient;
 import com.prozacto.prozacto.Entity.User.User;
 import com.prozacto.prozacto.converter.DoctorConverter;
+import com.prozacto.prozacto.converter.PatientConverter;
 import com.prozacto.prozacto.converter.UserConverter;
 import com.prozacto.prozacto.dao.DoctorDao;
+import com.prozacto.prozacto.dao.PatientDao;
 import com.prozacto.prozacto.dao.UserDao;
 import com.prozacto.prozacto.model.DoctorDto;
+import com.prozacto.prozacto.model.PatientDto;
 import com.prozacto.prozacto.model.UserDto;
 import com.prozacto.prozacto.model.UserRequestDto;
 import com.prozacto.prozacto.model.enums.UserType;
@@ -45,6 +49,12 @@ public class UserService {
     @Autowired
     DoctorConverter doctorConverter;
 
+    @Autowired
+    PatientConverter patientConverter;
+
+    @Autowired
+    PatientDao patientDao;
+
     @PersistenceContext(name = "coreTransactionManager")
     private EntityManager entityManager;
 
@@ -55,11 +65,10 @@ public class UserService {
     public UserDto create(UserDto userDto) throws Exception{
 
         validate(userDto);
+        User user = userDao.save(userConverter.convert(userDto));
 
         if(userDto.getUserType() == UserType.DOCTOR.getId())
         {
-            User user = userDao.save(userConverter.convert(userDto));
-
             Doctor doctor = new Doctor();
             doctor.setUserId(user.getId());
             doctor.setSpecialization(userDto.getDoctorDetails().getSpecialization());
@@ -68,16 +77,31 @@ public class UserService {
 
             return userConverter.convert(user,doctor);
         }
-        else {
-            User user = userDao.save(userConverter.convert(userDto));
-            return userConverter.convert(user);
-        }
+        else if(userDto.getUserType() == UserType.PATIENT.getId()) {
+            Patient patient = new Patient();
+            patient.setInsuranceId(userDto.getPatientDetails().getInsuranceId());
+            patient.setPcpId(userDto.getPatientDetails().getPcpId());
+            patient.setPcpName(userDto.getPatientDetails().getPcpName());
+            patient.setUserId(user.getId());
+            patient.setMedicalHistoryFilePath(userDto.getPatientDetails().getMedicalHistoryFilePath());
 
+            patient = patientDao.save(patient);
+
+            return userConverter.convert(user,patient);
+        }
+        else
+                return userConverter.convert(user);
 
     }
 
+
+
+
     public void validate(UserDto userDto) throws Exception
     {
+        if(userDto.getUserType() == null)
+            throw new Exception("UserType Required!");
+
         if(userDto.getUserType() == null || userDto.getContactNumber() == null || userDto.getUsername() == null)
             throw new Exception("User Type / Contact number / Username cannot be Null!");
 
@@ -86,18 +110,7 @@ public class UserService {
             throw new Exception("User with given Username or Contact Number already Exists!");
     }
 
-    public UserDto getDetails(UserRequestDto userRequestDto)
-    {
-        UserDto userDto = getUserDetails(userRequestDto);
-        if(userDto.getUserType() == 2)
-        {
-            Doctor doctor = doctorDao.findByUserId(userDto.getId());
-            DoctorDto doctorDto = doctorConverter.convertEntityToModel(doctor);
-            userDto.setDoctorDetails(doctorDto);
-        }
 
-        return userDto;
-    }
     public UserDto getUserDetails(UserRequestDto userRequestDto)
     {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
@@ -135,7 +148,7 @@ public class UserService {
         List<UserDto> userDtoList = userConverter.convert(userList);
 
         List<Integer> userIds = userDtoList.stream().map(UserDto::getId).collect(Collectors.toList());
-        if(userType == 2)
+        if(userType == UserType.DOCTOR.getId())
         {
             List<Doctor> doctors = doctorDao.findAllByUserIdIn(userIds);
             HashMap<Integer , Doctor> map = new HashMap<>();
@@ -150,7 +163,40 @@ public class UserService {
                 userDto.setDoctorDetails(doctorDto);
             }
         }
+        else if(userType == UserType.PATIENT.getId())
+        {
+            List<Patient> patients = patientDao.findAllByUserIdIn(userIds);
+            HashMap<Integer , Patient> map = new HashMap<>();
+
+            for(Patient patient : patients)
+                map.put(patient.getUserId() , patient);
+
+            for(UserDto userDto : userDtoList)
+            {
+                Patient patient = map.get(userDto.getId());
+                PatientDto patientDto = patientConverter.convert(patient);
+                userDto.setPatientDetails(patientDto);
+            }
+        }
         return userDtoList;
+    }
+
+    public UserDto getDetails(UserRequestDto userRequestDto)
+    {
+        UserDto userDto = getUserDetails(userRequestDto);
+        if(userDto.getUserType() != null) {
+            if (userDto.getUserType() == UserType.DOCTOR.getId()) {
+                Doctor doctor = doctorDao.findByUserId(userDto.getId());
+                DoctorDto doctorDto = doctorConverter.convertEntityToModel(doctor);
+                userDto.setDoctorDetails(doctorDto);
+            } else if (userDto.getUserType() == UserType.PATIENT.getId()) {
+                Patient patient = patientDao.findByUserId(userDto.getId());
+                PatientDto patientDto = patientConverter.convert(patient);
+                userDto.setPatientDetails(patientDto);
+            }
+        }
+
+        return userDto;
     }
 
 }

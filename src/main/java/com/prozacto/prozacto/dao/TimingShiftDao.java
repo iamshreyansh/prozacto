@@ -6,5 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface TimingShiftDao extends JpaRepository<TimingShift, Integer> {
-    List<TimingShift> findAllByEnrollmentId(Integer enrolmentId);
+    List<TimingShift> findAllByEnrollmentIdIn(List<Integer> enrolmentId);
 }

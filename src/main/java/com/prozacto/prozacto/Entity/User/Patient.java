@@ -30,4 +30,7 @@ public class Patient extends BaseEntityIntID {
     @Column(name = "pcp_id")
     private Integer pcpId;
 
+    @Column(name = "medical_history_file_path")
+    private String medicalHistoryFilePath;
+
 }

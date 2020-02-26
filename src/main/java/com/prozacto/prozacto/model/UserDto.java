@@ -20,5 +20,6 @@ public class UserDto {
     private Integer userType;
 
     private DoctorDto doctorDetails;
+    private PatientDto patientDetails;
 
 }

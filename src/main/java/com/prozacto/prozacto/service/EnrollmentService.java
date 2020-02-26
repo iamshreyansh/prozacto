@@ -44,8 +44,8 @@ public class EnrollmentService {
 
     public Enrollment enrollDoctor(EnrollmentDto enrollmentDto) throws Exception {
 
-        validate(enrollmentDto.getTimingShifts()); //Validate the new shifts
-//        validate(enrollmentDto); // Check For OverLapping Shifts with existing shifts if any.
+        validate(enrollmentDto.getTimingShifts()); // Validate the new shifts
+        validate(enrollmentDto); // Check For OverLapping Shifts with existing shifts if any.
 
         Enrollment enrollment = Enrollment.builder()
                                 .clinicId(enrollmentDto.getClinicId())
@@ -65,6 +65,35 @@ public class EnrollmentService {
     public List<Enrollment> findAllByClinicId(Integer clinicId) throws Exception {
         return enrollmentDao.findAllByClinicId(clinicId);
     }
+
+    public boolean validate(EnrollmentDto enrollmentDto) throws Exception
+    {
+        List<Enrollment> enrollments = enrollmentDao.findAllByDoctorId(enrollmentDto.getDoctorId());
+
+        List<Integer> enrollmentIds = new ArrayList<>();
+        for(Enrollment enrollment : enrollments)
+            enrollmentIds.add(enrollment.getId());
+
+        List<TimingShift> currentTimingShifts = timingShiftDao.findAllByEnrollmentIdIn(enrollmentIds);
+
+        List<Interval> intervals = getIntervals(currentTimingShifts);
+
+        for(TimingShift timingShift : enrollmentDto.getTimingShifts())
+        {
+            Integer startTime = Integer.parseInt(timingShift.getFromTime().replace(":" , ""));
+            Integer endTime = Integer.parseInt(timingShift.getToTime().replace(":" , ""));
+            for (Interval interval : intervals)
+            {
+                Integer start = interval.getStart();
+                Integer end = interval.getEnd();
+                if(!(start <= startTime && end <= startTime) || (start >= endTime && end >= endTime))
+                    throw new Exception("Overlapping Shifts found!");
+            }
+        }
+
+        return true;
+    }
+
 
 
     public boolean validate(List<TimingShift> timingShifts) throws Exception

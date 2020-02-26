@@ -2,10 +2,12 @@ package com.prozacto.prozacto.converter;
 
 
 import com.prozacto.prozacto.Entity.User.Doctor;
+import com.prozacto.prozacto.Entity.User.Patient;
 import com.prozacto.prozacto.Entity.User.User;
 
 
 import com.prozacto.prozacto.model.DoctorDto;
+import com.prozacto.prozacto.model.PatientDto;
 import com.prozacto.prozacto.model.UserDto;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +26,7 @@ public class UserConverter {
         user.setAge(userDto.getAge());
         user.setContactNumber(userDto.getContactNumber());
         user.setEmail(userDto.getEmail());
+        user.setUserType(userDto.getUserType());
         user.setPassword(userDto.getPassword());
         user.setUsername(userDto.getUsername());
         return user;
@@ -31,13 +34,7 @@ public class UserConverter {
 
     public UserDto convert(User user , Doctor doctor)
     {
-        UserDto userDto = new UserDto();
-        userDto.setAge(user.getAge());
-        userDto.setContactNumber(user.getContactNumber());
-        userDto.setEmail(user.getEmail());
-        userDto.setId(user.getId());
-        userDto.setUsername(user.getUsername());
-        userDto.setUserType(user.getUserType());
+        UserDto userDto = convert(user);
 
         DoctorDto doctorDto = new DoctorDto();
         doctorDto.setUserId(user.getId());
@@ -66,16 +63,27 @@ public class UserConverter {
         List<UserDto> userDtoList = new ArrayList<>();
         for(User user : users)
         {
-            UserDto userDto = new UserDto();
-            userDto.setAge(user.getAge());
-            userDto.setContactNumber(user.getContactNumber());
-            userDto.setEmail(user.getEmail());
-            userDto.setId(user.getId());
-            userDto.setUsername(user.getUsername());
-            userDto.setUserType(user.getUserType());
+            UserDto userDto = convert(user);
             userDtoList.add(userDto);
         }
 
         return userDtoList;
     }
+
+    public UserDto convert(User user , Patient patient)
+    {
+        UserDto userDto = convert(user);
+
+        PatientDto patientDto = new PatientDto();
+        patientDto.setInsuranceId(patient.getInsuranceId());
+        patientDto.setPcpId(patient.getPcpId());
+        patientDto.setPcpName(patient.getPcpName());
+        patientDto.setUserId(patient.getUserId());
+        patientDto.setMedicalHistoryFilePath(patient.getMedicalHistoryFilePath());
+
+        userDto.setPatientDetails(patientDto);
+
+        return userDto;
+    }
+
 }

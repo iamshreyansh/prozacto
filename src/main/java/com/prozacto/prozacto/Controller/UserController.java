@@ -27,7 +27,7 @@ public class UserController {
     }
 
     @GetMapping("/type")
-    public List<UserDto> getUsersByType(Integer userType)
+    public List<UserDto> getUsersByType(@RequestParam("type") Integer userType)
     {
         return userService.getUsersByType(userType);
     }
