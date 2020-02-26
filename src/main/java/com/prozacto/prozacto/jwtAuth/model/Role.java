@@ -8,6 +8,7 @@ public enum Role implements GrantedAuthority {
     PATIENT("PATIENT");
 
     String roleName;
+
     Role(String roleName) {
         this.roleName = roleName;
     }

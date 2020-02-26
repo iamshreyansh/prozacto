@@ -41,6 +41,8 @@ public class User extends BaseEntityIntID {
     @Column(name = "userType")
     private Integer userType;
 
+    private transient List<String> rolesList;
+
     @Enumerated(EnumType.STRING)
     @ElementCollection(fetch = FetchType.EAGER)
     private List<Role> roles;

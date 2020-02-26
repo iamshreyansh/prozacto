@@ -33,7 +33,7 @@ public class LoginController {
                 SecurityContextHolder.getContext().getAuthentication());
     }
 
-    @PostMapping("/signup")
+    @PostMapping("/sign-up")
     public String handleSignUp(@RequestBody User user){
         authUserService.signup(user);
         return "Sign up is successfull";
