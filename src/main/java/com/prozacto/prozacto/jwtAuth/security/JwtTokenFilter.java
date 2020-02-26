@@ -28,10 +28,10 @@ public class JwtTokenFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
         String token = jwtTokenProvider.resolveToken(httpServletRequest);
-        httpServletRequest.setAttribute(Constants.AUTH_USER, cacheService.getUser(token));
 
         try {
             if (token != null && jwtTokenProvider.validateToken(token)) {
+                httpServletRequest.setAttribute(Constants.AUTH_USER, cacheService.getUser(token));
                 Authentication auth = jwtTokenProvider.getAuthentication(token);
                 SecurityContextHolder.getContext().setAuthentication(auth);
             }
