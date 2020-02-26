@@ -2,14 +2,15 @@
 package com.prozacto.prozacto.Entity.User;
 
 import com.prozacto.prozacto.Entity.BaseEntityIntID;
+import com.prozacto.prozacto.jwtAuth.model.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Where;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
+import javax.persistence.*;
+import java.util.List;
 
 @Builder
 @Data
@@ -39,4 +40,10 @@ public class User extends BaseEntityIntID {
 
     @Column(name = "userType")
     private Integer userType;
+
+    private transient List<String> rolesList;
+
+    @Enumerated(EnumType.STRING)
+    @ElementCollection(fetch = FetchType.EAGER)
+    private List<Role> roles;
 }
