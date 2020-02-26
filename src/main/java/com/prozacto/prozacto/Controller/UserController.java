@@ -1,6 +1,7 @@
 package com.prozacto.prozacto.Controller;
 
 import com.prozacto.prozacto.Entity.User.User;
+import com.prozacto.prozacto.jwtAuth.security.Constants;
 import com.prozacto.prozacto.model.UserDto;
 import com.prozacto.prozacto.model.UserRequestDto;
 import com.prozacto.prozacto.service.CacheService;
@@ -44,7 +45,7 @@ public class UserController {
     }
 
     private User getUserFromRequest(){
-        String jwtToken = request.getParameter(AUTH_HEADER);
-        return cacheService.getUser(jwtToken);
+        User authUser = (User) request.getAttribute(Constants.AUTH_USER);
+        return authUser;
     }
 }
