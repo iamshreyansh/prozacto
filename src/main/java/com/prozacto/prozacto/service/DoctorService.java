@@ -2,8 +2,10 @@ package com.prozacto.prozacto.service;
 
 import com.prozacto.prozacto.Entity.Enrollment;
 import com.prozacto.prozacto.Entity.User.Doctor;
+import com.prozacto.prozacto.Entity.User.Patient;
 import com.prozacto.prozacto.Entity.User.User;
 import com.prozacto.prozacto.dao.DoctorDao;
+import com.prozacto.prozacto.dao.PatientDao;
 import com.prozacto.prozacto.model.EnrollmentDto;
 import com.prozacto.prozacto.model.enums.UserType;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +19,9 @@ public class DoctorService {
 
     @Autowired
     DoctorDao doctorDao;
+
+    @Autowired
+    PatientDao patientDao;
 
     @Autowired
     EnrollmentService enrollmentService;
@@ -52,9 +57,11 @@ public class DoctorService {
         return doctor;
     }
 
-    public boolean checkAccess(Integer doctorId, Integer patientId) throws Exception {
-        List<EnrollmentDto> enrollmentDtos = enrollmentService.findAllByDoctorId(doctorId);
+    public boolean checkAccess(Integer doctorUserId, Integer patientUserId) throws Exception {
+        Doctor doctor = doctorDao.findByUserId(doctorUserId);
+        Patient patient = patientDao.findByUserId(patientUserId);
+        List<EnrollmentDto> enrollmentDtos = enrollmentService.findAllByDoctorId(doctor.getId());
         List<Integer> clinicIds = enrollmentDtos.stream().map(EnrollmentDto::getClinicId).collect(Collectors.toList());
-        return documentPermissionService.checkAccess(clinicIds, patientId, doctorId);
+        return documentPermissionService.checkAccess(clinicIds, patient.getId(), doctor.getId());
     }
 }

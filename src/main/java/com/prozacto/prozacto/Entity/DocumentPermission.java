@@ -14,7 +14,7 @@ import javax.persistence.Entity;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity(name = "document_permission")
-@Where(clause = "deleted = false")
+@Where(clause = "deleted = 0")
 public class DocumentPermission extends BaseEntityIntID {
 
     @Column(name = "doctor_id")

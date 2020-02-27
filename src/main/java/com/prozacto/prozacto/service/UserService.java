@@ -146,7 +146,7 @@ public class UserService {
         return userConverter.convert(user);
     }
 
-    public List<UserDto> getUsersByType(Integer userType)
+    public List<UserDto> getUsersByType(Integer userType , User currentUser) throws Exception
     {
         List<User> userList = userDao.findAllByUserType(userType);
         List<UserDto> userDtoList = userConverter.convert(userList);
@@ -177,9 +177,15 @@ public class UserService {
 
             for(UserDto userDto : userDtoList)
             {
-                Patient patient = map.get(userDto.getId());
-                PatientDto patientDto = patientConverter.convert(patient);
-                userDto.setPatientDetails(patientDto);
+                if(doctorService.checkAccess(currentUser.getId() , userDto.getId()) == true)
+                {
+                    Patient patient = patientDao.findByUserId(userDto.getId());
+                    PatientDto patientDto = patientConverter.convert(patient);
+                    userDto.setPatientDetails(patientDto);
+                }
+                else {
+                    log.info("You don't have permission to access this User's Medical History!");
+                }
             }
         }
         return userDtoList;

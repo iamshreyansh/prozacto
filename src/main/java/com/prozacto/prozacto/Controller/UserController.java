@@ -39,9 +39,9 @@ public class UserController {
     }
 
     @GetMapping("/type")
-    public List<UserDto> getUsersByType(@RequestParam("type") Integer userType){
+    public List<UserDto> getUsersByType(@RequestParam("type") Integer userType) throws Exception{
         User user = getUserFromRequest();
-        return userService.getUsersByType(userType);
+        return userService.getUsersByType(userType , user);
     }
 
     private User getUserFromRequest(){

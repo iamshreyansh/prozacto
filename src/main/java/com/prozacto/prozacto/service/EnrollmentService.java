@@ -44,8 +44,8 @@ public class EnrollmentService {
 
     public Enrollment enrollDoctor(EnrollmentDto enrollmentDto) throws Exception {
 
-        validate(enrollmentDto.getTimingShifts()); // Validate the new shifts
-        validate(enrollmentDto); // Check For OverLapping Shifts with existing shifts if any.
+//        validate(enrollmentDto.getTimingShifts()); // Validate the new shifts
+//        validate(enrollmentDto); // Check For OverLapping Shifts with existing shifts if any.
 
         Enrollment enrollment = Enrollment.builder()
                                 .clinicId(enrollmentDto.getClinicId())
