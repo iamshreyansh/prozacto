@@ -1,18 +1,18 @@
-package com.prozacto.prozacto.jwtAuth.model;
+    package com.prozacto.prozacto.jwtAuth.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+    import lombok.AllArgsConstructor;
+    import lombok.Builder;
+    import lombok.Data;
+    import lombok.NoArgsConstructor;
 
-import java.util.List;
+    import java.util.List;
 
-@Builder
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
-public class UserDto {
-    private String username;
-    private String password;
-    private List<Role> roles;
-}
+    @Builder
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public class UserDto {
+        private String username;
+        private String password;
+        private List<Role> roles;
+    }
