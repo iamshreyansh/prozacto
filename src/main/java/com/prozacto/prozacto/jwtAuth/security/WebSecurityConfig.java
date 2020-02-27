@@ -56,6 +56,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public void configure(WebSecurity web) throws Exception {
 
         web.ignoring().antMatchers("/h2/**");
+        web.ignoring().antMatchers("/appointment/**");
+        web.ignoring().antMatchers("/clinic/**");
+        web.ignoring().antMatchers("/enrollment/**");
+        web.ignoring().antMatchers("/user/info/**");
+
     }
 
     @Autowired

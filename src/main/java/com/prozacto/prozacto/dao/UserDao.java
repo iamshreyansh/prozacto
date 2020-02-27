@@ -10,6 +10,6 @@ public interface UserDao extends JpaRepository<User, Integer> {
     List<User> findAllByNameLikeAndUserType(String name, Integer type);
     User findByUsernameOrContactNumber(String username , String contactNumber);
     List<User> findAllByUserType(Integer userType);
-    User findByName(String userName);
+    User findByUsername(String userName);
     boolean existsByName(String userName);
 }

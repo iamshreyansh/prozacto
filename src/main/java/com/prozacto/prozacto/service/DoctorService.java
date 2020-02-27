@@ -52,9 +52,9 @@ public class DoctorService {
         return doctor;
     }
 
-    public boolean requestDocumentAccess(Integer doctorId, Integer patientId) throws Exception {
+    public boolean checkAccess(Integer doctorId, Integer patientId) throws Exception {
         List<EnrollmentDto> enrollmentDtos = enrollmentService.findAllByDoctorId(doctorId);
         List<Integer> clinicIds = enrollmentDtos.stream().map(EnrollmentDto::getClinicId).collect(Collectors.toList());
-        return documentPermissionService.requestDocumentAccess(clinicIds, patientId, doctorId);
+        return documentPermissionService.checkAccess(clinicIds, patientId, doctorId);
     }
 }

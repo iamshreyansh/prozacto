@@ -50,7 +50,7 @@ public class DocumentPermissionService {
         documentPermissionDao.save(documentPermission);
     }
 
-    public boolean requestDocumentAccess(List<Integer> clinicIds, Integer patientId, Integer doctorId) throws Exception {
+    public boolean checkAccess(List<Integer> clinicIds, Integer patientId, Integer doctorId) throws Exception {
         String currentDate = LocalDate.now().toString();
         List<DocumentPermission> documentPermissions = documentPermissionDao.findAllByPatientIdAndClinicIdInAndAccessDateGreaterThanEqual(patientId, clinicIds, currentDate);
         if(!CollectionUtils.isEmpty(documentPermissions)){

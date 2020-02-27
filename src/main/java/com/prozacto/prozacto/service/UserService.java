@@ -15,6 +15,7 @@ import com.prozacto.prozacto.model.UserDto;
 import com.prozacto.prozacto.model.UserRequestDto;
 import com.prozacto.prozacto.model.enums.UserType;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -35,6 +36,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@Slf4j
 public class UserService {
 
     @Autowired
@@ -54,6 +56,8 @@ public class UserService {
 
     @Autowired
     PatientDao patientDao;
+
+    @Autowired DoctorService doctorService;
 
     @PersistenceContext(name = "coreTransactionManager")
     private EntityManager entityManager;
@@ -181,7 +185,7 @@ public class UserService {
         return userDtoList;
     }
 
-    public UserDto getDetails(UserRequestDto userRequestDto)
+    public UserDto getDetails(UserRequestDto userRequestDto , User currentUser) throws Exception
     {
         UserDto userDto = getUserDetails(userRequestDto);
         if(userDto.getUserType() != null) {
@@ -189,10 +193,17 @@ public class UserService {
                 Doctor doctor = doctorDao.findByUserId(userDto.getId());
                 DoctorDto doctorDto = doctorConverter.convertEntityToModel(doctor);
                 userDto.setDoctorDetails(doctorDto);
-            } else if (userDto.getUserType() == UserType.PATIENT.getId()) {
-                Patient patient = patientDao.findByUserId(userDto.getId());
-                PatientDto patientDto = patientConverter.convert(patient);
-                userDto.setPatientDetails(patientDto);
+            } else if (userDto.getUserType() == UserType.PATIENT.getId())
+            {
+                if(doctorService.checkAccess(currentUser.getId() , userRequestDto.getId()) == true)
+                {
+                    Patient patient = patientDao.findByUserId(userDto.getId());
+                    PatientDto patientDto = patientConverter.convert(patient);
+                    userDto.setPatientDetails(patientDto);
+                }
+                else {
+                   log.info("You don't have permission to access this User's Medical History!");
+                }
             }
         }
 

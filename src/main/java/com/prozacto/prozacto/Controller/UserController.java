@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
-import static com.prozacto.prozacto.jwtAuth.security.Constants.AUTH_HEADER;
 
 
 @RestController
@@ -30,7 +29,8 @@ public class UserController {
 
     @PostMapping("/info")
     public UserDto getUserDetails(@RequestBody UserRequestDto userRequestDto) throws Exception{
-        return userService.getDetails(userRequestDto);
+        User currentUser = getUserFromRequest();
+        return userService.getDetails(userRequestDto , currentUser);
     }
 
     @PostMapping("")

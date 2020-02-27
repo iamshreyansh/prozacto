@@ -1,8 +1,8 @@
 package com.prozacto.prozacto.jwtAuth.contoller;
 
-import com.prozacto.prozacto.Entity.User.User;
-import com.prozacto.prozacto.jwtAuth.model.UserDto;
+
 import com.prozacto.prozacto.jwtAuth.service.AuthUserService;
+import com.prozacto.prozacto.model.UserDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -34,8 +34,8 @@ public class LoginController {
     }
 
     @PostMapping("/sign-up")
-    public String handleSignUp(@RequestBody User user){
-        authUserService.signup(user);
+    public String handleSignUp(@RequestBody UserDto userDto) throws Exception{
+        authUserService.signup(userDto);
         return "Sign up is successfull";
     }
 }

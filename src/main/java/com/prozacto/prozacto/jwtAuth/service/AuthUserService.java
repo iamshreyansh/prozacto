@@ -1,22 +1,23 @@
 package com.prozacto.prozacto.jwtAuth.service;
 
-import com.google.common.cache.Cache;
 import com.prozacto.prozacto.Entity.User.User;
+import com.prozacto.prozacto.converter.UserConverter;
 import com.prozacto.prozacto.dao.UserDao;
 import com.prozacto.prozacto.jwtAuth.exception.CustomException;
 import com.prozacto.prozacto.jwtAuth.model.Role;
 import com.prozacto.prozacto.jwtAuth.security.JwtTokenProvider;
 import com.prozacto.prozacto.jwtAuth.utils.Hashing;
+import com.prozacto.prozacto.model.UserDto;
 import com.prozacto.prozacto.model.enums.UserType;
 import com.prozacto.prozacto.service.CacheService;
+import com.prozacto.prozacto.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
+
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
@@ -39,10 +40,16 @@ public class AuthUserService {
     @Autowired
     private CacheService cacheService;
 
+    @Autowired
+    UserService userService;
+
+    @Autowired
+    UserConverter userConverter;
+
     public String signin(String username, String password) {
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
-            User user = userRepository.findByName(username);
+            User user = userRepository.findByUsername(username);
             List<Role> userRoles = getUserRoles(user);
             String jwtToken = jwtTokenProvider.createToken(username, userRoles);
             cacheService.setUser(jwtToken, user);
@@ -52,10 +59,12 @@ public class AuthUserService {
         }
     }
 
-    public String signup(User user) {
-        if (!userRepository.existsByName(user.getUsername())) {
-            user.setPassword(Hashing.getEncoder().encode(user.getPassword()));
-            user = userRepository.save(user);
+
+    public String signup(UserDto userDto) throws Exception {
+        if (!userRepository.existsByName(userDto.getUsername())) {
+            userDto.setPassword(Hashing.getEncoder().encode(userDto.getPassword()));
+            userDto = userService.create(userDto);
+            User user = userConverter.convert(userDto);
             List<Role> roles = getUserRoles(user);
             return jwtTokenProvider.createToken(user.getUsername(), roles);
         } else {
@@ -80,7 +89,7 @@ public class AuthUserService {
     }
 
     public User search(String username) {
-        User user = userRepository.findByName(username);
+        User user = userRepository.findByUsername(username);
         if (user == null) {
             throw new CustomException("The user doesn't exist", HttpStatus.NOT_FOUND);
         }
@@ -88,11 +97,11 @@ public class AuthUserService {
     }
 
     public User whoami(HttpServletRequest req) {
-        return userRepository.findByName(jwtTokenProvider.getUsername(jwtTokenProvider.resolveToken(req)));
+        return userRepository.findByUsername(jwtTokenProvider.getUsername(jwtTokenProvider.resolveToken(req)));
     }
 
     public String refresh(String username) {
-        return jwtTokenProvider.createToken(username, userRepository.findByName(username).getRoles());
+        return jwtTokenProvider.createToken(username, userRepository.findByUsername(username).getRoles());
     }
 
 }
